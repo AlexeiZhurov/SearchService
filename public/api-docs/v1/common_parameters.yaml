@@ -15,3 +15,10 @@ QueryInclude:
   description: Связанные сущности для подгрузки, через запятую
   schema:
     type: string
+QuerySearch:
+  in: query
+  name: query
+  required: true
+  description: Строка по которой будет производится поиск 
+  schema:
+    type: string

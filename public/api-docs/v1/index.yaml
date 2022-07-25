@@ -1,48 +1,47 @@
 openapi: 3.0.3
 info:
-  title: Ensi Backend Skeleton (Replace me)
+  title: SearchService
   contact:
     name: API Support
     url: https://ensi.tech/contacts
     email: mail@greensight.ru
   version: 1.0.0
-  description: Ensi Backend Skeleton Description (Replace me)
+  description: Сервис через который осущестсвляется поиск постов с изпользованием elasticsearch
 servers:
   - url: /api/v1
 tags:
-  - name: examples
-    description: Тэг-пример
+  - name: suggests
+    description: Тэг-для маршрутов поиска
 paths:
-  /examples/{id}:
+  /suggests:search:
     get:
       tags:
-        - examples
-      operationId: getExample
-      x-lg-handler: 'App\Http\ApiV1\Controllers\FoosController@get'
-      x-lg-route-name: 'getExample'
+        - suggests
+      operationId: searchPost
+      x-lg-handler: 'App\Http\ApiV1\Controllers\SearchPostController@search'
+      x-lg-route-name: 'searchPost'
       x-lg-skip-request-generation: true
-      summary: Получение объекта типа Example
-      description: Получение объекта типа Example
+      summary: получение результата поиска в индексе posts  elasticsearch
+      description: Данный машрут позволяет произвести поиск в индексе elastic.Поиск происходит в индексе который называетя posts.Поля по которым происходит поиск - это title и text
       parameters:
-        - $ref: '#/components/parameters/PathId'
-        - $ref: '#/components/parameters/QueryInclude'
+        - $ref: '#/components/parameters/QuerySearch'
       responses:
-        #"200":
-          #description: Успешный ответ
-          # content:
-          #  application/json:
-          #    schema:
-          #      $ref: './customers.yaml#/CustomerResponse'
-        "404":
-          $ref: '#/components/responses/NotFound'
+        "200":
+          description: Успешный ответ
+          content:
+           application/json:
+             schema:
+               $ref: './posts/posts.yaml#/PostsResponse'
+        "400":
+          $ref: '#/components/responses/BadRequest'
         "500":
           $ref: '#/components/responses/ServerError'
 components:
   parameters:
     QueryInclude:
       $ref: './common_parameters.yaml#/QueryInclude'
-    PathId:
-      $ref: './common_parameters.yaml#/PathId'
+    QuerySearch:
+      $ref: './common_parameters.yaml#/QuerySearch'
   schemas:
     EmptyDataResponse:
       type: object
